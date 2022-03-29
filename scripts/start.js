@@ -1,5 +1,4 @@
 async function main() {
-  const [owner, somebodyElse] = await hre.ethers.getSigners();
   const keyboardContractsFactory = await hre.ethers.getContractFactory(
     "Keyboards"
   );
@@ -8,20 +7,14 @@ async function main() {
 
   console.log(`Contract deployed to: ${keyboardsContract.address}`);
 
-  let keyboards = await keyboardsContract.getKeyboards();
-  console.log("We got the keyboards!", keyboards);
-
-  const keyboardTxn1 = await keyboardsContract.create("Keyboard 1");
+  const keyboardTxn1 = await keyboardsContract.create(0, true, "sepia");
   await keyboardTxn1.wait();
 
-  const keyboardTxn2 = await keyboardsContract.create("Keyboard 2");
+  const keyboardTxn2 = await keyboardsContract.create(1, false, "grayscale");
   await keyboardTxn2.wait();
 
   keyboards = await keyboardsContract.getKeyboards();
   console.log("We got the keyboards!", keyboards);
-
-  keyboards = await keyboardsContract.connect(somebodyElse).getKeyboards();
-  console.log("As somebody else", keyboards);
 }
 
 main()
