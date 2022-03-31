@@ -1,9 +1,8 @@
-import { ethers } from "ethers";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import Keyboard from "../components/keyboard";
 import PrimaryButton from "../components/primary-button";
-import abi from "../utils/Keyboards.json";
+import getKeyboardsContract from "../utils/getKeyboardsContract";
 
 export default function Create() {
   const [ethereum, setEthereum] = useState(undefined);
@@ -15,8 +14,7 @@ export default function Create() {
 
   const [mining, setMining] = useState(false);
 
-  const contractAddress = "0x3b2e70a8aeD47B7882b3B48D5B86B6BF2265425E";
-  const contractABI = abi.abi;
+  const keyboardsContract = getKeyboardsContract(ethereum);
 
   const handleAccounts = (accounts) => {
     if (accounts.length > 0) {
@@ -54,21 +52,15 @@ export default function Create() {
   const submitCreate = async (e) => {
     e.preventDefault();
 
-    if (!ethereum) {
-      console.error("Ethereum object is required to create a keyboard");
+    if (!keyboardsContract) {
+      console.error(
+        "KeyboardsContract object is required to create a keyboard"
+      );
       return;
     }
 
     setMining(true);
     try {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const keyboardsContract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
       const createTxn = await keyboardsContract.create(
         keyboardKind,
         isPBT,

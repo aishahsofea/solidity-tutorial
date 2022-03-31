@@ -8,39 +8,15 @@ async function main() {
 
   console.log(`Contract deployed to: ${keyboardsContract.address}`);
 
-  const keyboardTxn1 = await keyboardsContract.create(0, true, "sepia");
-  await keyboardTxn1.wait();
+  const keyboardTxn = await keyboardsContract.create(0, true, "sepia");
+  const keyboardTxnReceipt = await keyboardTxn.wait();
+  // console.log(keyboardTxnReceipt.events);
 
-  const keyboardTxn2 = await keyboardsContract
+  const tipTxn = await keyboardsContract
     .connect(somebodyElse)
-    .create(1, false, "grayscale");
-  await keyboardTxn2.wait();
-
-  const balanceBefore = await hre.ethers.provider.getBalance(
-    somebodyElse.address
-  );
-  console.log(
-    `somebodyElse's balance before: ${hre.ethers.utils.formatEther(
-      balanceBefore
-    )}`
-  );
-
-  const tipTxn = await keyboardsContract.tip(1, {
-    value: hre.ethers.utils.parseEther("1000"),
-  });
-  await tipTxn.wait();
-
-  const balanceAfter = await hre.ethers.provider.getBalance(
-    somebodyElse.address
-  );
-  console.log(
-    `somebodyElse's balance after: ${hre.ethers.utils.formatEther(
-      balanceAfter
-    )}`
-  );
-
-  keyboards = await keyboardsContract.getKeyboards();
-  console.log("We got the keyboards!", keyboards);
+    .tip(0, { value: hre.ethers.utils.parseEther("1") });
+  const tipTxnReceipt = await tipTxn.wait();
+  console.log(tipTxnReceipt.events);
 }
 
 main()
