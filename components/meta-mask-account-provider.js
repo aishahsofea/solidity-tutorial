@@ -8,7 +8,6 @@ export default function MetaMaskAccountProvider({ children }) {
 
   const setEthereumFromWindow = async () => {
     if (window.ethereum) {
-      // Reload of chain changes
       window.ethereum.on("chainChanged", (_chainId) =>
         window.location.reload()
       );
@@ -27,7 +26,7 @@ export default function MetaMaskAccountProvider({ children }) {
   const handleAccounts = (accounts) => {
     if (accounts.length > 0) {
       const account = accounts[0];
-      console.log(`We have an authorized account: ${account}`);
+      console.log("We have an authorized account: ", account);
       setConnectedAccount(account);
     } else {
       console.log("No authorized accounts yet");
@@ -40,12 +39,11 @@ export default function MetaMaskAccountProvider({ children }) {
       handleAccounts(accounts);
     }
   };
-
   useEffect(() => getConnectedAccount());
 
   const connectAccount = async () => {
     if (!ethereum) {
-      alert("Ethereum object is required to connect an account");
+      console.error("Ethereum object is required to connect an account");
       return;
     }
 

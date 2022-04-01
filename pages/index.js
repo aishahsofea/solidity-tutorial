@@ -2,6 +2,7 @@ import { UserCircleIcon } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Keyboard from "../components/keyboard";
+import { useMetaMaskAccount } from "../components/meta-mask-account-provider";
 import PrimaryButton from "../components/primary-button";
 import TipButton from "../components/tip-button";
 import addressesEqual from "../utils/addressesEqual";

@@ -1,12 +1,12 @@
 import Router from "next/router";
 import { useState } from "react";
 import Keyboard from "../components/keyboard";
+import { useMetaMaskAccount } from "../components/meta-mask-account-provider";
 import PrimaryButton from "../components/primary-button";
 import getKeyboardsContract from "../utils/getKeyboardsContract";
 
 export default function Create() {
   const { ethereum, connectedAccount, connectAccount } = useMetaMaskAccount();
-
   const [keyboardKind, setKeyboardKind] = useState(0);
   const [isPBT, setIsPBT] = useState(false);
   const [filter, setFilter] = useState("");
