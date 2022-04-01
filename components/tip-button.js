@@ -1,16 +1,9 @@
 import { ethers } from "ethers";
 import { useState } from "react";
-import getKeyboardsContract from "../utils/getKeyboardsContract";
-import abi from "../utils/Keyboards.json";
 import SecondaryButton from "./secondary-button";
 
 export default function TipButton({ keyboardsContract, index }) {
-  const contractAddress = "0x30aA2CC8b9683CdF8a13A8B48dB47172195b8978";
-  const contractABI = abi.abi;
-
   const [mining, setMining] = useState(false);
-
-  const keyboardsContract = getKeyboardsContract(ethereum);
 
   const submitTip = async (e) => {
     if (!keyboardsContract) {

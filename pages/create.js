@@ -1,12 +1,11 @@
 import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Keyboard from "../components/keyboard";
 import PrimaryButton from "../components/primary-button";
 import getKeyboardsContract from "../utils/getKeyboardsContract";
 
 export default function Create() {
-  const [ethereum, setEthereum] = useState(undefined);
-  const [connectedAccount, setConnectedAccount] = useState(undefined);
+  const { ethereum, connectedAccount, connectAccount } = useMetaMaskAccount();
 
   const [keyboardKind, setKeyboardKind] = useState(0);
   const [isPBT, setIsPBT] = useState(false);
@@ -15,39 +14,6 @@ export default function Create() {
   const [mining, setMining] = useState(false);
 
   const keyboardsContract = getKeyboardsContract(ethereum);
-
-  const handleAccounts = (accounts) => {
-    if (accounts.length > 0) {
-      const account = accounts[0];
-      console.log(`We have an authorized account: ${account}`);
-      setConnectedAccount(account);
-    } else {
-      console.log("No authorized accounts yet");
-    }
-  };
-
-  const getConnectedAccount = async () => {
-    if (window.ethereum) {
-      setEthereum(window.ethereum);
-    }
-
-    if (ethereum) {
-      const accounts = await ethereum.request({ method: "eth_acounts" });
-      handleAccounts(accounts);
-    }
-  };
-
-  useEffect(() => getConnectedAccount(), []);
-
-  const connectAccount = async () => {
-    if (!ethereum) {
-      alert("Metamask is required to connect an account");
-      return;
-    }
-
-    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-    handleAccounts(accounts);
-  };
 
   const submitCreate = async (e) => {
     e.preventDefault();
